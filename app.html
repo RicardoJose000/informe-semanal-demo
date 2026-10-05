@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Informe Semanal · Demo</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23111318'/%3E%3Cpath d='M8 22V14l8-6 8 6v8' fill='none' stroke='%23C99A4E' stroke-width='2.4' stroke-linejoin='round'/%3E%3Cpath d='M13 22v-5h6v5' fill='none' stroke='%23fff' stroke-width='2.4'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body>
+
+<!-- ================= LOGIN ================= -->
+<div id="login" class="login">
+  <div class="login-visual">
+    <video autoplay muted loop playsinline poster="assets/media/hero.jpg"><source src="assets/media/hero.mp4" type="video/mp4"></video>
+    <div class="lv-shade"></div>
+    <a class="lv-brand" href="index.html">
+      <span class="brand-mark"><svg viewBox="0 0 32 32"><path d="M8 22V14l8-6 8 6v8" fill="none" stroke="#C99A4E" stroke-width="2.4" stroke-linejoin="round"/><path d="M13 22v-5h6v5" fill="none" stroke="#fff" stroke-width="2.4"/></svg></span>
+      Informe Semanal
+    </a>
+    <div class="lv-copy">
+      <p class="serif">“Cada lunes, el informe de cada inmueble listo en minutos, con el mismo formato y los mismos cálculos.”</p>
+      <span>Demo preparada para García-Toledano &amp; Asociados</span>
+    </div>
+  </div>
+
+  <div class="login-panel">
+    <form class="login-card" id="loginForm" autocomplete="off">
+      <h1 class="serif">Acceso</h1>
+      <p class="muted">Entra con tu usuario para gestionar los inmuebles.</p>
+      <label class="field">
+        <span>Usuario</span>
+        <input id="lgUser" type="text" value="asesor" required>
+      </label>
+      <label class="field">
+        <span>Contraseña</span>
+        <div class="pw">
+          <input id="lgPass" type="password" value="demo2026" required>
+          <button type="button" id="pwToggle" aria-label="Mostrar contraseña"><svg class="ico" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button>
+        </div>
+      </label>
+      <p class="login-error" id="lgError" hidden>Usuario o contraseña incorrectos.</p>
+      <button class="btn btn-dark login-btn" type="submit">Entrar
+        <svg class="ico" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      <div class="login-note">
+        <svg class="ico" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+        <p>Demo: usuario <b>asesor</b>, contraseña <b>demo2026</b>. En la versión final el acceso va con contraseñas cifradas y sesiones seguras en el servidor.</p>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ================= APP ================= -->
+<div id="app" class="app" hidden>
+  <header class="top">
+    <div class="company" id="company">
+      <button class="company-btn" id="companyBtn" aria-haspopup="listbox"></button>
+      <div class="company-menu" id="companyMenu" role="listbox" hidden></div>
+    </div>
+
+    <nav class="tabs" id="tabs">
+      <button data-view="semana"><svg class="ico" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>Semana</button>
+      <button data-view="evolucion"><svg class="ico" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>Evolución</button>
+      <button data-view="informe"><svg class="ico" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>Informe</button>
+      <button data-view="ajustes"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Ajustes</button>
+    </nav>
+
+    <div class="user" id="user">
+      <button class="user-btn" id="userBtn"><span class="avatar">LG</span><span class="user-txt"><b>Laura Gómez</b><i>Asesora</i></span><svg class="ico chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+      <div class="user-menu" id="userMenu" hidden>
+        <button id="resetDemo"><svg class="ico" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>Restablecer datos de prueba</button>
+        <a href="index.html"><svg class="ico" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Página de la demo</a>
+        <button id="logout"><svg class="ico" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>Cerrar sesión</button>
+      </div>
+    </div>
+  </header>
+
+  <aside class="side" id="side"></aside>
+
+  <main class="main" id="main">
+    <section class="view" id="view-semana"></section>
+    <section class="view" id="view-evolucion"></section>
+    <section class="view" id="view-informe"></section>
+    <section class="view" id="view-ajustes"></section>
+  </main>
+</div>
+
+<!-- PDF overlay -->
+<div class="gen" id="gen" hidden>
+  <div class="gen-card">
+    <div class="gen-paper"><i></i><i></i><i></i><i class="s"></i></div>
+    <b>Generando informe</b>
+    <span>Misma plantilla que la vista previa</span>
+  </div>
+</div>
+
+<div class="toasts" id="toasts"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

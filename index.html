@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Informe Semanal Inmobiliario · Demo</title>
+<meta name="description" content="Demo: registra los indicadores semanales de cada inmueble, mira su evolución y genera el informe PDF para el propietario con un solo botón.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23111318'/%3E%3Cpath d='M8 22V14l8-6 8 6v8' fill='none' stroke='%23C99A4E' stroke-width='2.4' stroke-linejoin='round'/%3E%3Cpath d='M13 22v-5h6v5' fill='none' stroke='%23fff' stroke-width='2.4'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/landing.css">
+</head>
+<body>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="assets/media/hero.jpg">
+    <source src="assets/media/hero.mp4" type="video/mp4">
+  </video>
+  <div class="hero-shade"></div>
+
+  <nav class="nav">
+    <a class="brand" href="#">
+      <span class="brand-mark"><svg viewBox="0 0 32 32"><path d="M8 22V14l8-6 8 6v8" fill="none" stroke="#C99A4E" stroke-width="2.4" stroke-linejoin="round"/><path d="M13 22v-5h6v5" fill="none" stroke="#fff" stroke-width="2.4"/></svg></span>
+      <span>Informe Semanal</span>
+    </a>
+    <div class="nav-links">
+      <a href="#funciones">Funciones</a>
+      <a href="#como">Cómo funciona</a>
+      <a href="#video">Vídeo</a>
+      <a href="#pdf">PDF</a>
+    </div>
+    <a class="btn btn-primary btn-sm" href="app.html">Abrir la demo</a>
+  </nav>
+
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <span class="eyebrow light reveal">Demo para García-Toledano &amp; Asociados</span>
+      <h1 class="serif reveal">El informe semanal de cada inmueble, <em>en un clic.</em></h1>
+      <p class="reveal">El asesor mete los datos de la semana. La aplicación guarda el histórico, calcula variaciones y ratios, dibuja la evolución y redacta el diagnóstico. Después, un botón y el PDF está listo para el propietario.</p>
+      <div class="hero-cta reveal">
+        <a class="btn btn-primary" href="app.html">Probar la demo
+          <svg class="ico" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-ghost" href="#video">
+          <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg>
+          Ver el vídeo</a>
+      </div>
+      <div class="hero-facts reveal">
+        <div><b>6</b><span>indicadores por inmueble</span></div>
+        <div><b>3</b><span>empresas de ejemplo</span></div>
+        <div><b>1</b><span>botón para el PDF</span></div>
+      </div>
+    </div>
+
+    <!-- 3D product stage -->
+    <div class="stage" id="stage" aria-hidden="true">
+      <div class="scene" id="scene">
+        <div class="win layer">
+          <div class="win-bar"><i></i><i></i><i></i><span>Informe semanal · C/ Mayor 12, 2º A</span></div>
+          <div class="win-body">
+            <div class="win-side">
+              <div class="ws-brand"><span></span>García-Toledano</div>
+              <div class="ws-item on"><img src="assets/media/p2.jpg" alt="">C/ Mayor 12</div>
+              <div class="ws-item"><img src="assets/media/p5.jpg" alt="">Av. Constitución</div>
+              <div class="ws-item"><img src="assets/media/p1.jpg" alt="">Urb. Los Altos</div>
+            </div>
+            <div class="win-main">
+              <div class="wm-kpis">
+                <div><span>Visitas</span><b>352</b><em class="up">▲ 6,7 %</em></div>
+                <div><span>Contactos</span><b>10</b><em class="down">▼ 9,1 %</em></div>
+                <div><span>Presenciales</span><b>3</b><em>= 0 %</em></div>
+                <div><span>Ofertas</span><b>0</b><em>= 0</em></div>
+              </div>
+              <div class="wm-chart">
+                <svg viewBox="0 0 300 110" preserveAspectRatio="none">
+                  <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C99A4E" stop-opacity=".28"/><stop offset="1" stop-color="#C99A4E" stop-opacity="0"/></linearGradient></defs>
+                  <g stroke="#EFEBE4"><line x1="0" x2="300" y1="20" y2="20"/><line x1="0" x2="300" y1="50" y2="50"/><line x1="0" x2="300" y1="80" y2="80"/></g>
+                  <path d="M0,74 L43,66 L86,67 L129,56 L172,46 L215,48 L258,37 L300,30 L300,110 L0,110Z" fill="url(#g1)"/>
+                  <polyline points="0,74 43,66 86,67 129,56 172,46 215,48 258,37 300,30" fill="none" stroke="#A8782F" stroke-width="2.5" stroke-linejoin="round"/>
+                  <polyline points="0,92 43,88 86,90 129,86 172,82 215,86 258,88 300,90" fill="none" stroke="#1F78A8" stroke-width="2" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="wm-btns"><span class="ghost">Copiar semana anterior</span><span>Generar informe</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="float kpi layer">
+          <span>Visitas · 8 semanas</span>
+          <b>+66 %</b>
+          <svg viewBox="0 0 120 30"><polyline points="2,26 18,22 34,23 50,17 66,11 82,12 98,6 118,3" fill="none" stroke="#1F7A4D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+
+        <div class="float paper layer">
+          <div class="pp-head"><span></span><div><i></i><i class="s"></i></div></div>
+          <div class="pp-photo" style="background-image:url(assets/media/p2.jpg)"></div>
+          <div class="pp-kpis"><b></b><b></b><b></b></div>
+          <div class="pp-lines"><i></i><i></i><i class="s"></i></div>
+          <div class="pp-tag">PDF</div>
+        </div>
+
+        <div class="float diag layer">
+          <span class="dot warn"></span>
+          <div><b>Diagnóstico</b><p>Atrae pero no convence. Revisar precio y primeras fotos.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a class="scroll-hint" href="#funciones" aria-label="Bajar"><span></span></a>
+</header>
+
+<!-- ================= REQUIREMENTS ================= -->
+<section class="section" id="funciones">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Lo que pedís, ya funcionando</span>
+      <h2 class="serif">Todo el proyecto, en una demo que podéis tocar</h2>
+      <p>Cada punto de vuestra descripción está en la demo con datos de prueba. Entrad, cambiad números y generad el PDF.</p>
+    </div>
+
+    <div class="req-grid">
+      <article class="req reveal tilt">
+        <div class="req-ico"><svg class="ico" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div>
+        <h3>Entrada de datos en segundos</h3>
+        <p>Visitas, favoritos, contactos, visitas presenciales, ofertas y feedback. Con Tab entre campos y botón “copiar semana anterior”.</p>
+        <span class="ok">En la demo</span>
+      </article>
+      <article class="req reveal tilt">
+        <div class="req-ico"><svg class="ico" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/><path d="M12 8v4l3 2"/></svg></div>
+        <h3>Histórico semanal</h3>
+        <p>Al pulsar “Guardar semana” se guarda una foto fija del inmueble. Se puede consultar cualquier semana anterior.</p>
+        <span class="ok">En la demo</span>
+      </article>
+      <article class="req reveal tilt">
+        <div class="req-ico"><svg class="ico" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></div>
+        <h3>Variaciones, ratios y tendencias</h3>
+        <p>Variación semanal, tasa de contacto, paso a visita, paso a oferta y gráficos de líneas. Todo se calcula solo.</p>
+        <span class="ok">En la demo</span>
+      </article>
+      <article class="req reveal tilt">
+        <div class="req-ico"><svg class="ico" viewBox="0 0 24 24"><path d="M9 18h6M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.3h6c0-1 .4-1.8 1-2.3A7 7 0 0 0 12 2z"/></svg></div>
+        <h3>Diagnóstico comercial</h3>
+        <p>Un resumen claro del estado de la captación con una recomendación concreta. El asesor puede retocarlo.</p>
+        <span class="ok">En la demo</span>
+      </article>
+      <article class="req reveal tilt">
+        <div class="req-ico"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></div>
+        <h3>Varias empresas, su marca</h3>
+        <p>Elegís la empresa en el desplegable y se aplican su logo y sus colores, en la aplicación y en el informe.</p>
+        <span class="ok">En la demo</span>
+      </article>
+      <article class="req reveal tilt">
+        <div class="req-ico"><svg class="ico" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M12 12v6M9 15l3 3 3-3"/></svg></div>
+        <h3>“Generar informe” en PDF</h3>
+        <p>Elegís campos, colores, logo e imagen. La vista previa y el PDF descargado son exactamente iguales.</p>
+        <span class="ok">En la demo</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= HOW IT WORKS ================= -->
+<section class="section dark" id="como">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow light">Cómo funciona</span>
+      <h2 class="serif">Cinco pasos. Menos de un minuto por inmueble.</h2>
+    </div>
+    <ol class="steps">
+      <li class="reveal"><span>01</span><b>Elegir empresa e inmueble</b><p>Logo y colores se aplican solos.</p></li>
+      <li class="reveal"><span>02</span><b>Meter la semana</b><p>Seis campos, con avisos si un dato parece raro.</p></li>
+      <li class="reveal"><span>03</span><b>Guardar semana</b><p>Queda en el histórico y se recalcula todo.</p></li>
+      <li class="reveal"><span>04</span><b>Revisar la vista previa</b><p>Campos, colores, logo e imagen a vuestro gusto.</p></li>
+      <li class="reveal last"><span>05</span><b>Generar informe</b><p>PDF listo para enviar al propietario.</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= VIDEO ================= -->
+<section class="section" id="video">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Vídeo</span>
+      <h2 class="serif">La demo completa en un minuto</h2>
+      <p>Del login al PDF descargado: empresa, datos de la semana, evolución, diagnóstico y personalización del informe.</p>
+    </div>
+    <div class="video-frame" id="videoFrame">
+      <div class="vf-bar"><i></i><i></i><i></i><span>Recorrido por la demo</span></div>
+      <video id="walk" controls muted playsinline preload="metadata" poster="assets/media/walkthrough.jpg">
+        <source src="assets/media/walkthrough.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PREVIEW = PDF ================= -->
+<section class="section warm" id="pdf">
+  <div class="wrap split">
+    <div class="split-copy reveal">
+      <span class="eyebrow">Vista previa = PDF</span>
+      <h2 class="serif">Lo que ves en pantalla es lo que se descarga</h2>
+      <p>Es lo que más falla en este tipo de herramientas: la pantalla se ve de una forma y el PDF sale de otra. Aquí la vista previa y el PDF salen de la misma plantilla, así que son idénticos.</p>
+      <ul class="checks">
+        <li>Activar o quitar cualquier campo con un clic</li>
+        <li>Colores del informe y logotipo propios</li>
+        <li>Foto del inmueble y diagnóstico editable</li>
+        <li>Plantilla clonada de vuestro modelo actual</li>
+      </ul>
+    </div>
+    <div class="papers" id="papers" aria-hidden="true">
+      <div class="sheet back">
+        <div class="sh-label">Vista previa</div>
+      </div>
+      <div class="sheet front">
+        <div class="sh-head"><span></span><div><b>Informe semanal</b><i>C/ Mayor 12, 2º A · Semana 40</i></div></div>
+        <div class="sh-photo" style="background-image:url(assets/media/p2.jpg)"></div>
+        <div class="sh-kpis"><div><span>Visitas</span><b>352</b></div><div><span>Contactos</span><b>10</b></div><div><span>Ofertas</span><b>0</b></div></div>
+        <svg viewBox="0 0 200 50" class="sh-chart"><polyline points="2,40 30,34 58,35 86,27 114,20 142,21 170,13 198,8" fill="none" stroke="#A8782F" stroke-width="2" stroke-linejoin="round"/></svg>
+        <div class="sh-diag"><i></i><i></i><i class="s"></i></div>
+        <div class="sh-label">PDF descargado</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MULTI-COMPANY ================= -->
+<section class="section" id="empresas">
+  <div class="wrap split rev">
+    <div class="brand-demo reveal" aria-hidden="true">
+      <div class="bd-card" id="bdCard">
+        <div class="bd-head"><span class="bd-logo" id="bdLogo">GT</span><div><b id="bdName">García-Toledano &amp; Asociados</b><i>Informe semanal de comercialización</i></div></div>
+        <div class="bd-kpis"><div><span>Visitas</span><b>352</b></div><div><span>Favoritos</span><b>41</b></div><div><span>Contactos</span><b>10</b></div></div>
+        <div class="bd-bar"><i style="width:78%"></i></div>
+        <div class="bd-bar"><i style="width:46%"></i></div>
+        <div class="bd-bar"><i style="width:22%"></i></div>
+      </div>
+    </div>
+    <div class="split-copy reveal">
+      <span class="eyebrow">Multiempresa</span>
+      <h2 class="serif">Cada empresa con su logo y sus colores</h2>
+      <p>Las empresas se dan de alta una vez. Al elegirlas, la aplicación y el informe se visten con su imagen. Probadlo:</p>
+      <div class="swatches" id="swatches">
+        <button class="sw on" data-name="García-Toledano &amp; Asociados" data-logo="GT" data-c1="#111318" data-c2="#A8782F"><i style="background:#111318"></i><i style="background:#A8782F"></i>García-Toledano</button>
+        <button class="sw" data-name="Costa Hábitat Inmobiliaria" data-logo="CH" data-c1="#0F4C5C" data-c2="#E07A1F"><i style="background:#0F4C5C"></i><i style="background:#E07A1F"></i>Costa Hábitat</button>
+        <button class="sw" data-name="Urbana Homes Madrid" data-logo="UH" data-c1="#1D3557" data-c2="#C8553D"><i style="background:#1D3557"></i><i style="background:#C8553D"></i>Urbana Homes</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DELIVERY ================= -->
+<section class="section warm">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">La entrega</span>
+      <h2 class="serif">Lo que recibís al final</h2>
+    </div>
+    <div class="deliv">
+      <div class="reveal"><span class="n">1</span><b>Aplicación instalada</b><p>Con login seguro y roles. Funciona en ordenador y tablet.</p></div>
+      <div class="reveal"><span class="n">2</span><b>Base de datos</b><p>Empresas, inmuebles, usuarios y todas las semanas guardadas.</p></div>
+      <div class="reveal"><span class="n">3</span><b>Plantilla PDF dinámica</b><p>Clonada de vuestro modelo actual, idéntica a la vista previa.</p></div>
+      <div class="reveal"><span class="n">4</span><b>Código y guía</b><p>Código comentado y guía breve, incluido cómo añadir o quitar campos.</p></div>
+    </div>
+    <div class="stack reveal">
+      <span>React</span><span>Node.js</span><span>PostgreSQL</span><span>Chart.js</span><span>Puppeteer</span><span>Open source</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CTA ================= -->
+<section class="cta">
+  <video class="hero-video" autoplay muted loop playsinline preload="none" poster="assets/media/hero.jpg">
+    <source src="assets/media/hero.mp4" type="video/mp4">
+  </video>
+  <div class="cta-shade"></div>
+  <div class="wrap cta-inner reveal">
+    <h2 class="serif">Entrad y probadlo con datos de prueba</h2>
+    <p>Usuario <code>asesor</code> · Contraseña <code>demo2026</code> (ya vienen rellenos)</p>
+    <a class="btn btn-primary" href="app.html">Abrir la demo
+      <svg class="ico" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap foot-inner">
+    <span>Demo con datos ficticios. Los datos que introduzcáis se guardan solo en vuestro navegador.</span>
+    <span>Vídeo: Mixkit · Fotos: Pexels</span>
+  </div>
+</footer>
+
+<script src="assets/js/landing.js"></script>
+</body>
+</html>
