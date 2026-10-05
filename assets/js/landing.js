@@ -61,5 +61,16 @@
       });
     }, { threshold: 0.5 });
     vio.observe(walk);
+
+    // The video autoplays muted; one click turns the music on
+    const sound = document.getElementById('sound');
+    const syncSound = () => sound.classList.toggle('off', !walk.muted);
+    sound.addEventListener('click', () => {
+      walk.muted = false;
+      if (walk.ended || walk.currentTime > walk.duration - 1) walk.currentTime = 0;
+      walk.play().catch(() => {});
+      syncSound();
+    });
+    walk.addEventListener('volumechange', syncSound);
   }
 })();

@@ -52,4 +52,4 @@ En la demo también se puede hacer sin tocar código desde **Ajustes > Campos**.
 - Gráficos: Chart.js
 - PDF: Puppeteer (Chrome), con la misma plantilla que la vista previa, clonada del modelo actual
 
-Créditos: vídeo de Mixkit, fotos de Pexels.
+Créditos: vídeo y música de Mixkit, fotos de Pexels.
