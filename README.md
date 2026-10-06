@@ -1,7 +1,7 @@
 # Informe Semanal Inmobiliario · Demo
 
 Demo funcional del informe semanal de comercialización para García-Toledano & Asociados
-y AS Grupo Inmobiliario: el asesor introduce los datos y el feedback de la semana, la
+y AS Grupo Inmobiliario: el asesor introduce los datos y los comentarios de compradores de la semana, la
 aplicación guarda el histórico, calcula ratios y acumulados desde la publicación, muestra
 la fuerza comercial del inmueble con un indicador de aguja, redacta una conclusión neutra
 basada en los datos y genera el informe PDF de hasta dos páginas con un solo botón.
@@ -15,8 +15,8 @@ Los datos son de prueba. Lo que se introduce en la demo se guarda solo en el nav
 
 | Requisito | Dónde |
 |---|---|
-| Visualizaciones, favoritos, solicitudes, clientes ofrecidos, no viables, visitas y ofertas | Pestaña **Semana** |
-| Feedback de cada visita: fecha, nombre, valoración, motivos y comentario | **Semana** > Feedback de la semana |
+| Visualizaciones, favoritos, solicitudes de información, no viables, visitas y ofertas | Pestaña **Semana** |
+| Comentarios y feedback de compradores: fecha, nombre, valoración, motivos y comentario | **Semana** > Comentarios y feedback de compradores |
 | Clientes no viables por financiación, excluidos de los ratios | **Semana**, **Evolución** e informe |
 | Guardar la semana como histórico | Botón **Guardar semana** |
 | Indicador de fuerza comercial y su evolución semana a semana | **Evolución** |
@@ -57,8 +57,8 @@ dentro de `assets/js/data.js` y se ajustan sin tocar el resto del código.
 ## Versión final
 
 - Interfaz: React
-- Servidor: Node.js + Express, login seguro con contraseñas cifradas y seis accesos
-- Base de datos: PostgreSQL (empresas, inmuebles, usuarios, semanas y feedback)
+- Servidor: Node.js + Express, login seguro con contraseñas cifradas, usuarios con nombre y dos accesos genéricos
+- Base de datos: PostgreSQL (empresas, inmuebles, usuarios, semanas y comentarios)
 - Gráficos: Chart.js
 - PDF: Puppeteer (Chrome), con la misma plantilla que la vista previa
 
