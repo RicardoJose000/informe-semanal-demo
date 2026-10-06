@@ -275,6 +275,7 @@
     return next > cur ? list[list.length - 1].week : next;
   }
 
+  const hintOf = (f) => (f.key === 'ofrecidos' ? `Clientes de la base de datos ${company().dbLabel || 'propia'}` : (f.hint || ''));
   let fbDraft = [];
   function fbRow(f, i) {
     return `<div class="fbi" data-i="${i}">
@@ -322,13 +323,13 @@
           <div class="missing" id="missing" hidden></div>
           <div class="inputs">${fields().map((f, i) => `
             <label class="inp ${f.key === 'noViables' ? 'inp-nv' : ''}">
-              <span class="inp-label">${esc(f.label)}<i title="${esc(f.hint || '')}">${esc(f.hint || '')}</i></span>
+              <span class="inp-label">${esc(f.label)}<i title="${esc(hintOf(f))}">${esc(hintOf(f))}</i></span>
               <input type="number" min="0" step="1" inputmode="numeric" data-k="${f.key}" data-i="${i}" value="${saved && val(saved, f.key) != null ? val(saved, f.key) : ''}" placeholder="">
               <span class="inp-foot"><i>Anterior: <b>${prevW ? num(val(prevW, f.key)) : '–'}</b></i><span class="live-delta" data-d="${f.key}"></span></span>
             </label>`).join('')}
           </div>
 
-          <div class="fb-head"><div><h3>Feedback de la semana</h3><p>Una línea por visita, cliente del bufete o cliente no viable. Marca los motivos para que el informe los acumule.</p></div>
+          <div class="fb-head"><div><h3>Feedback de la semana</h3><p>Una línea por visita, cliente de la base de datos o cliente no viable. Marca los motivos para que el informe los acumule.</p></div>
             <button class="btn btn-line btn-sm" id="fbAdd"><svg class="ico" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Añadir feedback</button></div>
           <div class="fb-list" id="fbList"></div>
 

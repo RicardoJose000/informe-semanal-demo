@@ -16,7 +16,7 @@
     { key: 'visualizaciones', label: 'Visualizaciones',       short: 'Visualiz.',    hint: 'Vistas del anuncio en portales',              active: true, custom: false },
     { key: 'favoritos',       label: 'Favoritos',             short: 'Favoritos',    hint: 'Veces guardado como favorito',                 active: true, custom: false },
     { key: 'solicitudes',     label: 'Solicitudes de información', short: 'Solicitudes', hint: 'Contactos recibidos por portales',          active: true, custom: false },
-    { key: 'ofrecidos',       label: 'Ofrecido a clientes',   short: 'Ofrecido',     hint: 'Clientes de la base de datos del bufete',      active: true, custom: false },
+    { key: 'ofrecidos',       label: 'Ofrecido a clientes',   short: 'Ofrecido',     hint: 'Clientes de la base de datos propia',       active: true, custom: false },
     { key: 'noViables',       label: 'No viables (financiación)', short: 'No viables', hint: 'Descartados por el departamento hipotecario', active: true, custom: false },
     { key: 'presenciales',    label: 'Visitas presenciales',  short: 'Visitas',      hint: 'Visitas hechas al inmueble',                   active: true, custom: false },
     { key: 'ofertas',         label: 'Ofertas',               short: 'Ofertas',      hint: 'Ofertas recibidas',                            active: true, custom: false },
@@ -24,7 +24,7 @@
 
   /* ---------- Motivos del feedback ---------- */
   const MOTIVOS = ['Zona', 'Precio', 'Tamaño', 'Estado / reforma', 'Distribución', 'Tipo de vivienda', 'Luz / orientación', 'Otros'];
-  const FB_TIPOS = { visita: 'Visita', cliente: 'Cliente del bufete', noViable: 'No viable (financiación)' };
+  const FB_TIPOS = { visita: 'Visita', cliente: 'Cliente de la base de datos', noViable: 'No viable (financiación)' };
   const VALORACION = { positiva: 'Le gusta', dudas: 'Con dudas', negativa: 'Descartado' };
 
   /* ---------- Semanas (ISO, empiezan en lunes) ---------- */
@@ -67,8 +67,8 @@
     { id: 'p1', company: 'gt', title: 'Piso en venta en C/ Alfonso XII, 18 – San Vicente del Raspeig', short: 'Piso C/ Alfonso XII, 18',
       address: 'C/ Alfonso XII, 18, 3º B · San Vicente del Raspeig', type: 'Piso', ref: 'GT-0412', price: 214000, owner: 'Dña. Carmen Ruiz Vidal', photo: 'assets/media/p2.jpg',
       features: ['148 m² construidos', '3 dormitorios', '2 baños', 'Terraza', 'Balcón', 'Buen estado', 'Armarios empotrados', 'Trastero', 'Plaza de garaje'],
-      s: { visualizaciones: [3180, 1300, 950, 720, 540, 430, 360, 320], favoritos: [96, 54, 33, 22, 15, 11, 9, 8], solicitudes: [5, 3, 2, 2, 2, 1, 1, 1],
-           ofrecidos: [3, 1, 1, 1, 1, 1, 0, 1], noViables: [1, 0, 1, 0, 0, 1, 0, 0], presenciales: [2, 2, 2, 1, 1, 0, 0, 0], ofertas: [0, 0, 0, 0, 0, 0, 0, 0] },
+      s: { visualizaciones: [3180, 1300, 950, 720, 540, 430, 360, 320], favoritos: [96, 54, 33, 22, 15, 11, 9, 8], solicitudes: [5, 3, 2, 1, 2, 1, 1, 1],
+           ofrecidos: [3, 1, 1, 0, 1, 1, 0, 1], noViables: [1, 0, 1, 0, 0, 1, 0, 0], presenciales: [2, 2, 2, 1, 1, 0, 0, 0], ofertas: [0, 0, 0, 0, 0, 0, 0, 0] },
       fb: {
         0: [['visita', 2, 'Vanesa', 'dudas', ['Zona'], 'Le gusta el piso, pero no está muy convencida con la zona.'],
             ['visita', 4, 'Marta', 'dudas', ['Zona'], 'Le gusta mucho el piso; busca algo más céntrico o en la zona sur.'],
@@ -209,7 +209,7 @@
     { key: 'bad', label: 'Revisión', from: 0 },
   ];
   const zoneOf = (x) => ZONES.find((z) => x >= z.from);
-  const score = (r) => clamp(r, 0, 1.25) * 80;
+  const score = (r) => clamp(r, 0, 1.2) * 78;   // tope 94: ningun inmueble real es 'perfecto'
 
   function strength(list, idx) {
     if (!list[idx]) return null;
@@ -225,7 +225,7 @@
     const last3 = list.slice(Math.max(0, idx - 2), idx + 1);
     const of3 = sumK(last3, 'ofertas');
     const visAcc = sumK(list.slice(0, idx + 1), 'presenciales');
-    const ofe = of3 > 0 ? 100 : (visAcc >= 5 && idx >= 3) ? 15 : idx < 2 ? 75 : 45; // muchas visitas acumuladas sin oferta restan
+    const ofe = of3 > 0 ? 92 : (visAcc >= 5 && idx >= 3) ? 15 : idx < 2 ? 75 : 45; // muchas visitas acumuladas sin oferta restan
     const total = Math.round(vis * REF.w.vis + int * REF.w.int + vst * REF.w.vst + ofe * REF.w.ofe);
     return { value: total, zone: zoneOf(total), parts: { visibilidad: Math.round(vis), interes: Math.round(int), visita: Math.round(vst), ofertas: Math.round(ofe) } };
   }
