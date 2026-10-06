@@ -71,7 +71,8 @@ body { background: var(--bg); }
 .company-menu button { width: 100%; display: flex; align-items: center; gap: 10px; padding: 8px 10px; border: 0; background: transparent; border-radius: 10px; text-align: left; }
 .company-menu button:hover { background: var(--bg); }
 .company-menu button.on { background: var(--warm); }
-.company-menu button span { flex: 1; }
+.company-menu button > span:not(.logo) { flex: 1; min-width: 0; }
+.company-menu .logo { flex: none; }
 .company-menu b { display: block; font-size: 14px; color: var(--ink); }
 .company-menu i { font-style: normal; font-size: 12px; color: var(--muted); }
 .company-menu .ico { color: var(--good); }
