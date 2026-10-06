@@ -165,7 +165,7 @@
         return `<button class="pitem ${p.id === S.ui.property ? 'on' : ''}" data-id="${p.id}">
           <img src="${esc(p.photo)}" alt="">
           <span class="pi-txt"><b>${esc(p.short || p.title)}</b><i>${esc(p.ref)} · ${money.format(p.price)}</i>
-          <em>Semana ${n} en el mercado${st ? ` · <span class="st ${st.zone.key}">${st.value} ${st.zone.label}</span>` : ''}</em></span>
+          <em>${n ? `Semana ${n} en el mercado` : 'Sin datos todavía'}${st ? ` · <span class="st ${st.zone.key}">${st.value} ${st.zone.label}</span>` : ''}</em></span>
         </button>`;
       }).join('') || '<p class="side-empty">Esta empresa aún no tiene inmuebles.</p>'}</div>
       <button class="side-add" data-add><svg class="ico" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Nuevo inmueble</button>`;
@@ -276,7 +276,7 @@
         <select data-f="tipo" aria-label="Tipo">${Object.entries(FB_TIPOS).map(([k, l]) => `<option value="${k}" ${f.tipo === k ? 'selected' : ''}>${l}</option>`).join('')}</select>
         <input type="date" data-f="fecha" value="${esc(f.fecha)}" aria-label="Fecha">
         <input data-f="nombre" value="${esc(f.nombre)}" placeholder="Nombre o cliente" aria-label="Nombre">
-        <select data-f="valoracion" aria-label="Valoración" ${f.tipo === 'noViable' ? 'hidden' : ''}>${Object.entries(VALORACION).map(([k, l]) => `<option value="${k}" ${f.valoracion === k ? 'selected' : ''}>${l}</option>`).join('')}</select>
+        <select data-f="valoracion" aria-label="Valoración" ${f.tipo === 'noViable' ? 'style="visibility:hidden"' : ''}>${Object.entries(VALORACION).map(([k, l]) => `<option value="${k}" ${f.valoracion === k ? 'selected' : ''}>${l}</option>`).join('')}</select>
         <button class="icon-btn" data-del title="Quitar"><svg class="ico" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
       </div>
       <div class="chips" ${f.tipo === 'noViable' ? 'hidden' : ''}>${MOTIVOS.map((m) => `<button type="button" class="chip ${(f.motivos || []).includes(m) ? 'on' : ''}" data-m="${esc(m)}">${esc(m)}</button>`).join('')}</div>
@@ -361,7 +361,7 @@
     const readForm = () => {
       const values = {};
       fields().forEach((f) => { const v = $(`input[data-k="${f.key}"]`, el).value; values[f.key] = v === '' ? null : Math.max(0, Math.round(Number(v))); });
-      const feedback = fbDraft.filter((f) => (f.nombre || '').trim() || (f.comentario || '').trim());
+      const feedback = fbDraft.filter((f) => (f.nombre || '').trim() || (f.comentario || '').trim() || (f.motivos || []).length);
       return { week: editWeek, values, feedback };
     };
     const renderFb = () => {
@@ -391,7 +391,7 @@
 
     renderFb();
     $('#fbAdd').onclick = () => {
-      const today = new Date().toISOString().slice(0, 10);
+      const n = new Date(), today = `${n.getFullYear()}-${String(n.getMonth() + 1).padStart(2, '0')}-${String(n.getDate()).padStart(2, '0')}`;
       const end = shiftWeek(editWeek, 1);
       fbDraft.push({ tipo: 'visita', fecha: today >= editWeek && today < end ? today : editWeek, nombre: '', valoracion: 'dudas', motivos: [], comentario: '' });
       renderFb(); const rows = $$('.fbi', el); $('input[data-f="nombre"]', rows[rows.length - 1]).focus();
@@ -497,7 +497,7 @@
   function fbHTML(f) {
     const cls = f.tipo === 'noViable' ? 'nv' : f.valoracion;
     return `<div class="fbx ${cls}">
-      <div class="fbx-top"><b>${esc(f.nombre || 'Sin nombre')}</b><span>${fmtDay(f.fecha)}</span><em>${f.tipo === 'noViable' ? 'No viable · financiación' : `${FB_TIPOS[f.tipo]} · ${VALORACION[f.valoracion] || ''}`}</em></div>
+      <div class="fbx-top"><b>${esc((f.nombre || '').trim() || FB_TIPOS[f.tipo] || 'Cliente')}</b><span>${fmtDay(f.fecha)}</span><em>${f.tipo === 'noViable' ? 'No viable · financiación' : `${FB_TIPOS[f.tipo]} · ${VALORACION[f.valoracion] || ''}`}</em></div>
       <p>${esc(f.comentario)}</p>
       ${(f.motivos || []).length ? `<div class="mtags">${f.motivos.map((m) => `<span>${esc(m)}</span>`).join('')}</div>` : ''}
     </div>`;
@@ -747,6 +747,7 @@
     const today = new Date();
     const gen = `${today.getDate()} de ${today.toLocaleDateString('es-ES', { month: 'long' })} de ${today.getFullYear()}`;
     const page2 = sec.charts || sec.ratios || sec.feedback || sec.diagnosis;
+    let secN = 0; const H = (t) => `${++secN}. ${t}`;   // secciones numeradas, como en vuestro informe actual
     const total = page2 ? 2 : 1;
 
     const head = (small) => `
@@ -762,7 +763,7 @@
         <section class="pp-prop">
           <div class="pp-photo"><img src="${esc(photo)}" alt=""></div>
           <div class="pp-info">
-            <span class="pp-eyebrow">Datos del inmueble</span>
+            <span class="pp-eyebrow">${H('Datos del inmueble')}</span>
             <h2>${esc(p.title)}</h2>
             <dl>
               <div><dt>Referencia</dt><dd>${esc(p.ref)}</dd></div>
@@ -775,39 +776,39 @@
         </section>
 
         ${sec.gauge ? `<section class="pp-gauge">
-          <div class="pg-dial"><h3>Fuerza comercial</h3><canvas id="pg1"></canvas><div class="pg-val"><b>${st.value}</b><span class="pp-status ${st.zone.key}">${st.zone.label}</span></div></div>
+          <div class="pg-dial"><h3>${H('Fuerza comercial')}</h3><canvas id="pg1"></canvas><div class="pg-val"><b>${st.value}</b><span class="pp-status ${st.zone.key}">${st.zone.label}</span></div></div>
           <div class="pg-hist"><h3>Evolución semana a semana</h3><canvas id="pg2" width="400" height="190"></canvas>
             <div class="pg-legend"><span><i style="background:${ZC.good}"></i>Favorable 65-100</span><span><i style="background:${ZC.warn}"></i>Atención 40-64</span><span><i style="background:${ZC.bad}"></i>Revisión 0-39</span></div></div>
         </section>` : ''}
 
-        ${sec.kpis && fs.length ? `<section class="pp-block"><h3>Datos de la semana</h3><div class="pp-kpis" style="grid-template-columns:repeat(${Math.min(fs.length, 7)},1fr)">${fs.map((f) => `
+        ${sec.kpis && fs.length ? `<section class="pp-block"><h3>${H('Datos de la semana')}</h3><div class="pp-kpis" style="grid-template-columns:repeat(${Math.min(fs.length, 7)},1fr)">${fs.map((f) => `
           <div><span>${esc(f.short || f.label)}</span><b>${num(val(cur, f.key))}</b>${deltaHTML(val(cur, f.key), prev ? val(prev, f.key) : null)}</div>`).join('')}</div></section>` : ''}
 
-        ${sec.cumulative ? `<section class="pp-block"><h3>Acumulado desde la publicación</h3>${cumulativeHTML(acc)}</section>` : ''}
+        ${sec.cumulative ? `<section class="pp-block"><h3>${H('Acumulado desde la publicación')}</h3>${cumulativeHTML(acc)}</section>` : ''}
         ${foot(1)}
       </div>`;
 
     const p2 = page2 ? `
       <div class="paper" data-page="2">
         ${head(true)}
-        ${sec.charts ? `<section class="pp-block"><h3>Impacto estadístico</h3><div class="pp-charts">
+        ${sec.charts ? `<section class="pp-block"><h3>${H('Impacto estadístico')}</h3><div class="pp-charts">
           <figure><figcaption>Visualizaciones del anuncio</figcaption><canvas id="pc1" width="330" height="132"></canvas></figure>
           <figure><figcaption>Contactos viables y visitas presenciales</figcaption><canvas id="pc2" width="330" height="132"></canvas>
             <div class="pp-legend"><span><i style="background:${col.c2}"></i>Contactos viables</span><span><i style="background:${SERIES[0]}"></i>Visitas presenciales</span></div></figure>
-        </div></section>` : ''}
+        </div><p class="pp-impact">${esc(impactText(acc, c))}</p></section>` : ''}
 
         ${sec.ratios ? `<section class="pp-row">
-          <div class="pp-ratios"><h3>Ratios de conversión</h3><table>
+          <div class="pp-ratios"><h3>${H('Ratios de conversión')}</h3><table>
             <thead><tr><th></th><th>Semana</th><th>Anterior</th></tr></thead>
             <tbody>${RATIO_DEFS.map((x) => `<tr><td>${x.label}<i>${x.formula}</i></td><td>${pct(r[x.key], x.digits)}</td><td>${pct(rp[x.key], x.digits)}</td></tr>`).join('')}</tbody></table>
             ${acc.noViables ? `<p class="pp-note">${acc.noViables} ${acc.noViables === 1 ? 'cliente no viable' : 'clientes no viables'} por financiación desde la publicación, excluidos de los ratios.</p>` : ''}</div>
-          <div class="pp-mot"><h3>Motivos más repetidos</h3>${motivosHTML(acc)}</div>
+          <div class="pp-mot"><h3>${H('Motivos más repetidos')}</h3>${motivosHTML(acc)}</div>
         </section>` : ''}
 
-        ${sec.feedback && fb.items.length ? `<section class="pp-block"><h3>Feedback de clientes</h3><div class="pp-fb">${fb.items.map(fbHTML).join('')}</div>
+        ${sec.feedback && fb.items.length ? `<section class="pp-block"><h3>${H('Feedback')}</h3><div class="pp-fb">${fb.items.map(fbHTML).join('')}</div>
           ${fb.total > fb.items.length ? `<p class="pp-note">Se muestran los ${fb.items.length} comentarios más recientes de ${fb.total}.</p>` : ''}</section>` : ''}
 
-        ${sec.diagnosis ? `<section class="pp-diag"><h3>Conclusión</h3><p>${esc(dText)}</p></section>` : ''}
+        ${sec.diagnosis ? `<section class="pp-diag"><h3>${H('Conclusión')}</h3><p>${esc(dText)}</p></section>` : ''}
         ${foot(2)}
       </div>` : '';
 
@@ -825,6 +826,14 @@
       historyChart('pg2', strengthSeries(list, idx), list.slice(0, idx + 1).map((w, i) => `S${i + 1}`), { static: true });
     }
     if (page2 && sec.charts) drawPaperCharts(list.slice(0, idx + 1), col);
+  }
+
+  // Parrafo de impacto estadistico, con la misma redaccion que vuestros informes actuales
+  function impactText(acc, c) {
+    const s1 = acc.solicitudes === 1 ? '1 solicitud de información' : `${num(acc.solicitudes)} solicitudes de información`;
+    const s2 = acc.ofrecidos === 1 ? '1 cliente' : `${num(acc.ofrecidos)} clientes`;
+    const s3 = acc.presenciales === 1 ? '1 visita presencial' : `${num(acc.presenciales)} visitas presenciales`;
+    return `Durante las ${acc.semanas} ${acc.semanas === 1 ? 'semana' : 'semanas'} desde la publicación, el anuncio ha obtenido ${num(acc.visualizaciones)} visualizaciones y se han recibido un total de ${s1} a través de portales inmobiliarios. Además, la vivienda ha sido ofrecida directamente a ${s2} de la base de datos ${c.dbLabel || 'de la empresa'}, generándose ${s3} en total.`;
   }
 
   function drawPaperCharts(list, col) {

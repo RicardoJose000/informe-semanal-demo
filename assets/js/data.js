@@ -57,9 +57,9 @@
   const FONTS = ['Fraunces', 'Cinzel', 'Playfair Display', 'Lora', 'Montserrat', 'Inter'];
   const COMPANIES = [
     { id: 'gt', name: 'García-Toledano & Asociados', short: 'GT', c1: '#111318', c2: '#A8782F', font: 'Fraunces',
-      logo: 'assets/media/gt-mark.png', logoFull: 'assets/media/gt-logo.png', tagline: 'Bufete de abogados e inmobiliaria', address: 'C/ Poeta García Lorca, 29 · San Vicente del Raspeig (03690)' },
+      logo: 'assets/media/gt-mark.png', logoFull: 'assets/media/gt-logo.png', tagline: 'Bufete de abogados e inmobiliaria', dbLabel: 'del bufete', address: 'C/ Poeta García Lorca, 29 · San Vicente del Raspeig (03690)' },
     { id: 'as', name: 'AS Grupo Inmobiliario', short: 'AS', c1: '#0B0B0C', c2: '#C9A24A', font: 'Cinzel',
-      logo: 'assets/media/as-mark.png', logoFull: 'assets/media/as-logo.png', tagline: 'Tu historia comienza aquí', address: 'San Vicente del Raspeig (Alicante)' },
+      logo: 'assets/media/as-mark.png', logoFull: 'assets/media/as-logo.png', tagline: 'Tu historia comienza aquí', dbLabel: 'de la inmobiliaria', address: 'San Vicente del Raspeig (Alicante)' },
   ];
 
   // s: 8 valores por campo (de la semana mas antigua a la mas reciente). fb: feedback por semana (indice -> lista)
@@ -276,6 +276,7 @@
       recs.push('mantener la estrategia actual');
     }
     if (!items.length) items.push('Semana sin cambios relevantes respecto a las anteriores.');
+    if (!recs.length) recs.push(weeksOn < 4 ? 'seguir de cerca la evolución de las próximas semanas, todavía con pocos datos acumulados' : 'seguir de cerca la evolución de las próximas dos semanas');
 
     const headline = st.zone.key === 'good'
       ? (v0(cur, 'ofertas') > 0 ? 'Buena respuesta del mercado, con oferta esta semana' : 'El inmueble mantiene una buena respuesta del mercado')
