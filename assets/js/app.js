@@ -204,7 +204,7 @@
   }
 
   /* ---------- Indicador de aguja (canvas: se ve igual en pantalla y en el PDF) ---------- */
-  function drawGauge(cv, value, w = 300, h = 172) {
+  function drawGauge(cv, value, w = 300, h = 172, empty = false) {
     const dpr = 3;
     cv.width = w * dpr; cv.height = h * dpr; cv.style.width = `${w}px`; cv.style.height = `${h}px`;
     const g = cv.getContext('2d');
@@ -213,7 +213,7 @@
     const ang = (v) => Math.PI + (v / 100) * Math.PI;
     [[0, 40, ZC.bad], [40, 65, ZC.warn], [65, 100, ZC.good]].forEach(([a, b, c]) => {
       g.beginPath(); g.arc(cx, cy, r, ang(a) + 0.015, ang(b) - 0.015);
-      g.strokeStyle = c; g.lineWidth = th; g.lineCap = 'butt'; g.stroke();
+      g.strokeStyle = c; g.lineWidth = th; g.lineCap = 'butt'; g.globalAlpha = empty ? 0.22 : 1; g.stroke(); g.globalAlpha = 1;
     });
     // marcas menores
     g.strokeStyle = 'rgba(17,19,24,.18)'; g.lineWidth = 1;
@@ -223,6 +223,10 @@
     }
     g.fillStyle = '#6B7280'; g.font = '600 11px Inter, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
     [0, 40, 65, 100].forEach((v) => { const a = ang(v), rr = r + th / 2 + 12; g.fillText(String(v), cx + Math.cos(a) * rr, cy + Math.sin(a) * rr); });
+    if (empty) { // sin datos: sin aguja, solo el centro en gris
+      g.beginPath(); g.arc(cx, cy, 8, 0, Math.PI * 2); g.fillStyle = '#D9D4CB'; g.fill();
+      return;
+    }
     // aguja
     const a = ang(Math.max(0, Math.min(100, value)));
     g.save(); g.translate(cx, cy); g.rotate(a);
@@ -311,6 +315,8 @@
             </div>
           </div>
 
+          ${saved ? '' : `<div class="newweek" id="newWeek"><div><b>Semana nueva</b><span>Rellena los datos o empieza con los de la semana anterior y cambia solo lo que se ha movido.</span></div>${prevW ? '<button class="btn btn-accent btn-sm" id="copyPrev2"><svg class="ico" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>Copiar semana anterior</button>' : ''}</div>`}
+          <div class="missing" id="missing" hidden></div>
           <div class="inputs">${fields().map((f, i) => `
             <label class="inp ${f.key === 'noViables' ? 'inp-nv' : ''}">
               <span class="inp-label">${esc(f.label)}<i title="${esc(f.hint || '')}">${esc(f.hint || '')}</i></span>
@@ -382,8 +388,8 @@
         $('#liveGaugeTxt').innerHTML = `<b>${st.value}</b><span class="pill ${st.zone.key}">${st.zone.label}</span>`;
         $('#liveDiag').innerHTML = `<b>${esc(d.headline)}</b><p>${esc(d.rec)}</p>`;
       } else {
-        drawGauge($('#liveGauge'), 0, 240, 140);
-        $('#liveGaugeTxt').innerHTML = '<span class="muted small">Completa los datos para ver la fuerza comercial</span>';
+        drawGauge($('#liveGauge'), 0, 240, 140, true);
+        $('#liveGaugeTxt').innerHTML = '<span class="muted small">La aguja aparece al completar los datos de la semana</span>';
         $('#liveDiag').innerHTML = '<p class="muted">El diagnóstico aparece al completar los datos.</p>';
       }
       $('#warns').innerHTML = warnings(draft.values, prevW).map((w) => `<div class="alert-row"><svg class="ico" viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L2.4 18a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>${w}</div>`).join('');
@@ -416,18 +422,27 @@
       inp.addEventListener('keydown', (e) => { if (e.key !== 'Enter') return; e.preventDefault(); if (inputs[i + 1]) inputs[i + 1].focus(); else $('#fbAdd').focus(); });
     });
     $$('.wp-btn', el).forEach((b) => { b.onclick = () => { editWeek = shiftWeek(editWeek, Number(b.dataset.wk)); viewSemana(el); }; });
-    $('#copyPrev').onclick = () => {
+    const copyPrev = () => {
       if (!prevW) return;
       fields().forEach((f) => { $(`input[data-k="${f.key}"]`, el).value = val(prevW, f.key) ?? ''; });
       refreshLive(); inputs[0].focus(); inputs[0].select();
+      $$('.inp.err', el).forEach((x) => x.classList.remove('err'));
+      if ($('#newWeek')) $('#newWeek').hidden = true;
+      if ($('#missing')) $('#missing').hidden = true;
       toast('Datos de la semana anterior copiados. Cambia solo lo que se ha movido.');
     };
+    $('#copyPrev').onclick = copyPrev;
+    if ($('#copyPrev2')) $('#copyPrev2').onclick = copyPrev;
     $('#saveWeek').onclick = () => {
       const draft = readForm();
       const missing = fields().filter((f) => draft.values[f.key] == null);
       if (missing.length) {
         missing.forEach((f) => $(`input[data-k="${f.key}"]`, el).closest('.inp').classList.add('err'));
-        toast(`Falta rellenar: ${missing.map((f) => f.label.toLowerCase()).join(', ')}.`, 'bad');
+        const m = $('#missing');
+        m.innerHTML = `<svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg><span>Para guardar la semana faltan ${missing.length === fields().length ? 'todos los datos' : missing.map((f) => `<b>${esc(f.label.toLowerCase())}</b>`).join(', ')}.${prevW ? ' Puedes empezar con <b>Copiar semana anterior</b>.' : ''}</span>`;
+        m.hidden = false;
+        m.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        $(`input[data-k="${missing[0].key}"]`, el).focus({ preventScroll: true });
         return;
       }
       const arr = S.weeks[p.id] || (S.weeks[p.id] = []);
@@ -455,7 +470,11 @@
         $('.form-card', el).scrollIntoView({ behavior: 'smooth', block: 'start' });
       };
     });
-    $$('.inp input', el).forEach((i) => i.addEventListener('input', () => i.closest('.inp').classList.remove('err')));
+    $$('.inp input', el).forEach((i) => i.addEventListener('input', () => {
+      i.closest('.inp').classList.remove('err');
+      if (!$$('.inp.err', el).length && $('#missing')) $('#missing').hidden = true;
+      if ($('#newWeek') && inputs.some((x) => x.value !== '')) $('#newWeek').hidden = true;
+    }));
     refreshLive();
   }
 
