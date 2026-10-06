@@ -314,7 +314,7 @@ body { background: var(--bg); }
 .pp-gauge { display: grid; grid-template-columns: 300px 1fr; gap: 24px; padding: 22px 40px 0; }
 .pg-dial canvas { display: block; margin: 0 auto; }
 .pg-val { text-align: center; margin-top: 6px; }
-.pg-val b { display: block; font-size: 34px; line-height: 1.15; margin-bottom: 6px; color: #111318; }
+.pg-val b { display: block; font-size: 34px; line-height: 1.2; margin-bottom: 12px; color: #111318; }
 .pg-hist canvas { width: 400px !important; height: 190px !important; display: block; }
 .pg-legend { display: flex; gap: 12px; font-size: 10px; color: #3A3F48; margin-top: 4px; }
 .pg-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; vertical-align: -1px; margin-right: 4px; }
