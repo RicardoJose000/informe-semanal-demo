@@ -46,8 +46,10 @@
       btn.classList.add('on');
       card.style.setProperty('--c1', btn.dataset.c1);
       card.style.setProperty('--c2', btn.dataset.c2);
-      document.getElementById('bdLogo').textContent = btn.dataset.logo;
-      document.getElementById('bdName').textContent = btn.dataset.name;
+      document.getElementById('bdLogo').src = btn.dataset.logo;
+      const nm = document.getElementById('bdName');
+      nm.textContent = btn.dataset.name;
+      nm.style.fontFamily = `"${btn.dataset.font}", Georgia, serif`;
     });
   });
 

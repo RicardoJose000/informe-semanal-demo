@@ -1,37 +1,41 @@
 # Informe Semanal Inmobiliario · Demo
 
-Demo funcional para convertir el informe semanal de cada inmueble en una aplicación web:
-el asesor introduce los indicadores de la semana, la aplicación guarda el histórico,
-calcula variaciones y ratios, dibuja la evolución, redacta un diagnóstico comercial y
-genera el PDF para el propietario con un solo botón.
+Demo funcional del informe semanal de comercialización para García-Toledano & Asociados
+y AS Grupo Inmobiliario: el asesor introduce los datos y el feedback de la semana, la
+aplicación guarda el histórico, calcula ratios y acumulados desde la publicación, muestra
+la fuerza comercial del inmueble con un indicador de aguja, redacta una conclusión neutra
+basada en los datos y genera el informe PDF de hasta dos páginas con un solo botón.
 
 **Acceso:** usuario `asesor` · contraseña `demo2026`
 
 Los datos son de prueba. Lo que se introduce en la demo se guarda solo en el navegador
-(Ajustes de usuario > Restablecer datos de prueba vuelve al estado inicial).
+(menú de usuario > Restablecer datos de prueba vuelve al estado inicial).
 
 ## Qué se puede probar
 
 | Requisito | Dónde |
 |---|---|
-| Entrada rápida de visitas, favoritos, contactos, visitas presenciales, ofertas y feedback | Pestaña **Semana** |
-| Guardar la semana como histórico (snapshot) | Botón **Guardar semana** |
-| Variaciones, ratios de conversión y evolución | **Semana** (cálculo en vivo) y **Evolución** |
-| Gráficos de líneas y diagnóstico comercial | **Evolución** |
-| Empresa con su logo y colores | Desplegable de empresa (arriba a la izquierda) |
-| Elegir campos, cambiar colores, subir logo o imagen | **Informe** |
-| “Generar informe” en PDF idéntico a la vista previa | **Informe** > **Generar informe** |
-| Varias empresas, inmuebles y campos nuevos | **Ajustes** |
+| Visualizaciones, favoritos, solicitudes, clientes ofrecidos, no viables, visitas y ofertas | Pestaña **Semana** |
+| Feedback de cada visita: fecha, nombre, valoración, motivos y comentario | **Semana** > Feedback de la semana |
+| Clientes no viables por financiación, excluidos de los ratios | **Semana**, **Evolución** e informe |
+| Guardar la semana como histórico | Botón **Guardar semana** |
+| Indicador de fuerza comercial y su evolución semana a semana | **Evolución** |
+| Ratios, acumulado desde la publicación y motivos más repetidos | **Evolución** |
+| Conclusión basada en los datos, editable | **Evolución** e **Informe** |
+| Informe de hasta dos páginas, campos y bloques activables | **Informe** |
+| Dos empresas con su logo, colores y tipografía | Desplegable de empresa (arriba a la izquierda) |
+| "Generar informe" en PDF idéntico a la vista previa | **Informe** > **Generar informe** |
+| Empresas, campos, inmuebles y usuarios | **Ajustes** |
 
 ## Estructura
 
 ```
 index.html            Presentación de la demo
 app.html              Aplicación (login + vistas)
-assets/js/data.js     Campos, datos de prueba, cálculos y reglas del diagnóstico
+assets/js/data.js     Campos, datos de prueba, cálculos, indicador de fuerza y reglas de la conclusión
 assets/js/app.js      Interfaz: formulario, evolución, informe, PDF y ajustes
 assets/css/           Estilos
-assets/media/         Vídeo, fotos y recorrido
+assets/media/         Logos, vídeo, fotos y recorrido
 ```
 
 ## Cómo añadir o quitar un campo
@@ -44,12 +48,18 @@ assets/media/         Vídeo, fotos y recorrido
 
 En la demo también se puede hacer sin tocar código desde **Ajustes > Campos**.
 
+## Indicador de fuerza comercial
+
+Cuatro componentes de 0 a 100 (visibilidad 20 %, interés 30 %, paso a visita 30 %, ofertas 20 %)
+y tres zonas: favorable 65-100, atención 40-64, revisión 0-39. Los parámetros están en `REF`
+dentro de `assets/js/data.js` y se ajustan sin tocar el resto del código.
+
 ## Versión final
 
 - Interfaz: React
-- Servidor: Node.js + Express, login seguro con contraseñas cifradas y roles
-- Base de datos: PostgreSQL (empresas, inmuebles, usuarios y semanas)
+- Servidor: Node.js + Express, login seguro con contraseñas cifradas y seis accesos
+- Base de datos: PostgreSQL (empresas, inmuebles, usuarios, semanas y feedback)
 - Gráficos: Chart.js
-- PDF: Puppeteer (Chrome), con la misma plantilla que la vista previa, clonada del modelo actual
+- PDF: Puppeteer (Chrome), con la misma plantilla que la vista previa
 
 Créditos: vídeo y música de Mixkit, fotos de Pexels.

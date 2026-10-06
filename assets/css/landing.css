@@ -234,3 +234,10 @@ body { background: #fff; }
   .papers { height: 420px; transform: scale(.82); transform-origin: top center; }
   .sheet { width: 250px; height: 370px; }
 }
+
+/* v2: logos reales y fuerza comercial */
+.bd-logo { overflow: hidden; background: var(--c1) !important; box-shadow: inset 0 0 0 1px rgba(255,255,255,.18); }
+.bd-logo img { width: 80%; height: 80%; object-fit: contain; }
+#bdName { font-family: "Fraunces", Georgia, serif; font-weight: 500; font-size: 18px; }
+.kpi b.kpi-bad { color: var(--bad); }
+.kpi svg { height: 34px; }
