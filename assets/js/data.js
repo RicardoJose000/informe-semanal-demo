@@ -16,7 +16,6 @@
     { key: 'visualizaciones', label: 'Visualizaciones',       short: 'Visualiz.',    hint: 'Vistas del anuncio en portales',              active: true, custom: false },
     { key: 'favoritos',       label: 'Favoritos',             short: 'Favoritos',    hint: 'Veces guardado como favorito',                 active: true, custom: false },
     { key: 'solicitudes',     label: 'Solicitudes de información', short: 'Solicitudes', hint: 'Contactos recibidos por portales',          active: true, custom: false },
-    { key: 'ofrecidos',       label: 'Ofrecido a clientes',   short: 'Ofrecido',     hint: 'Clientes de la base de datos propia',       active: true, custom: false },
     { key: 'noViables',       label: 'No viables (financiación)', short: 'No viables', hint: 'Descartados por el departamento hipotecario', active: true, custom: false },
     { key: 'presenciales',    label: 'Visitas presenciales',  short: 'Visitas',      hint: 'Visitas hechas al inmueble',                   active: true, custom: false },
     { key: 'ofertas',         label: 'Ofertas',               short: 'Ofertas',      hint: 'Ofertas recibidas',                            active: true, custom: false },
@@ -24,7 +23,7 @@
 
   /* ---------- Motivos del feedback ---------- */
   const MOTIVOS = ['Zona', 'Precio', 'Tamaño', 'Estado / reforma', 'Distribución', 'Tipo de vivienda', 'Luz / orientación', 'Otros'];
-  const FB_TIPOS = { visita: 'Visita', cliente: 'Cliente de la base de datos', noViable: 'No viable (financiación)' };
+  const FB_TIPOS = { visita: 'Visita', cliente: 'Contacto sin visita', noViable: 'No viable (financiación)' };
   const VALORACION = { positiva: 'Le gusta', dudas: 'Con dudas', negativa: 'Descartado' };
 
   /* ---------- Semanas (ISO, empiezan en lunes) ---------- */
@@ -59,7 +58,7 @@
     { id: 'gt', name: 'García-Toledano & Asociados', short: 'GT', c1: '#111318', c2: '#A8782F', font: 'Fraunces',
       logo: 'assets/media/gt-mark.png', logoFull: 'assets/media/gt-logo.png', tagline: 'Bufete de abogados e inmobiliaria', dbLabel: 'del bufete', address: 'C/ Poeta García Lorca, 29 · San Vicente del Raspeig (03690)' },
     { id: 'as', name: 'AS Grupo Inmobiliario', short: 'AS', c1: '#0B0B0C', c2: '#C9A24A', font: 'Cinzel',
-      logo: 'assets/media/as-mark.png', logoFull: 'assets/media/as-logo.png', tagline: 'Tu historia comienza aquí', dbLabel: 'de la inmobiliaria', address: 'San Vicente del Raspeig (Alicante)' },
+      logo: 'assets/media/as-mark.png', logoFull: 'assets/media/as-logo.png', tagline: 'Tu historia comienza aquí', dbLabel: 'de la inmobiliaria', address: 'C/ Azorín, 4 · Alicante' },
   ];
 
   // s: 8 valores por campo (de la semana mas antigua a la mas reciente). fb: feedback por semana (indice -> lista)
@@ -67,8 +66,8 @@
     { id: 'p1', company: 'gt', title: 'Piso en venta en C/ Alfonso XII, 18 – San Vicente del Raspeig', short: 'Piso C/ Alfonso XII, 18',
       address: 'C/ Alfonso XII, 18, 3º B · San Vicente del Raspeig', type: 'Piso', ref: 'GT-0412', price: 214000, owner: 'Dña. Carmen Ruiz Vidal', photo: 'assets/media/p2.jpg',
       features: ['148 m² construidos', '3 dormitorios', '2 baños', 'Terraza', 'Balcón', 'Buen estado', 'Armarios empotrados', 'Trastero', 'Plaza de garaje'],
-      s: { visualizaciones: [3180, 1300, 950, 720, 540, 430, 360, 320], favoritos: [96, 54, 33, 22, 15, 11, 9, 8], solicitudes: [5, 3, 2, 1, 2, 1, 1, 1],
-           ofrecidos: [3, 1, 1, 0, 1, 1, 0, 1], noViables: [1, 0, 1, 0, 0, 1, 0, 0], presenciales: [2, 2, 2, 1, 1, 0, 0, 0], ofertas: [0, 0, 0, 0, 0, 0, 0, 0] },
+      s: { visualizaciones: [3180, 1300, 950, 720, 540, 430, 360, 320], favoritos: [96, 54, 33, 22, 15, 11, 9, 8], solicitudes: [8, 4, 3, 1, 3, 2, 1, 2],
+           noViables: [1, 0, 1, 0, 0, 1, 0, 0], presenciales: [2, 2, 2, 1, 1, 0, 0, 0], ofertas: [0, 0, 0, 0, 0, 0, 0, 0] },
       fb: {
         0: [['visita', 2, 'Vanesa', 'dudas', ['Zona'], 'Le gusta el piso, pero no está muy convencida con la zona.'],
             ['visita', 4, 'Marta', 'dudas', ['Zona'], 'Le gusta mucho el piso; busca algo más céntrico o en la zona sur.'],
@@ -85,8 +84,7 @@
     { id: 'p2', company: 'gt', title: 'Bungalow en venta en C/ Riu Serpis, 6 – Mutxamel', short: 'Bungalow C/ Riu Serpis, 6',
       address: 'C/ Riu Serpis, 6 · Mutxamel', type: 'Bungalow', ref: 'GT-0429', price: 385000, owner: 'D. Javier Moreno Sanz', photo: 'assets/media/p1.jpg',
       features: ['304 m² construidos', '264 m² útiles', '4 dormitorios', '3 baños', 'Terraza', 'Muy buen estado', 'Año de construcción: 2021', 'Orientación norte y sur', 'Plaza de garaje'],
-      s: { visualizaciones: [1950, 720, 540, 470], favoritos: [61, 24, 15, 12], solicitudes: [0, 1, 0, 0], ofrecidos: [2, 1, 0, 1],
-           noViables: [0, 0, 0, 0], presenciales: [0, 1, 0, 0], ofertas: [0, 0, 0, 0] },
+      s: { visualizaciones: [1950, 720, 540, 470], favoritos: [61, 24, 15, 12], solicitudes: [2, 2, 0, 1], noViables: [0, 0, 0, 0], presenciales: [0, 1, 0, 0], ofertas: [0, 0, 0, 0] },
       fb: {
         0: [['cliente', 2, 'Cliente bufete', 'negativa', ['Tipo de vivienda'], 'Busca chalet independiente.'],
             ['cliente', 4, 'Cliente bufete', 'negativa', ['Tipo de vivienda'], 'Su búsqueda se centra en chalet independiente.']],
@@ -96,8 +94,8 @@
     { id: 'p3', company: 'gt', title: 'Ático en venta en Av. de la Libertad, 41 – Sant Joan d’Alacant', short: 'Ático Av. de la Libertad, 41',
       address: 'Av. de la Libertad, 41, 6º · Sant Joan d’Alacant', type: 'Ático', ref: 'GT-0398', price: 289000, owner: 'Familia Ortega Blanco', photo: 'assets/media/p5.jpg',
       features: ['112 m² construidos', '3 dormitorios', '2 baños', 'Terraza de 40 m²', 'Reformado', 'Ascensor', 'Plaza de garaje'],
-      s: { visualizaciones: [2410, 1380, 1120, 980, 940, 900, 870, 850], favoritos: [88, 61, 49, 44, 41, 40, 38, 37], solicitudes: [6, 5, 5, 4, 4, 4, 3, 4],
-           ofrecidos: [4, 2, 1, 1, 1, 1, 0, 1], noViables: [1, 1, 0, 1, 0, 0, 1, 0], presenciales: [3, 3, 3, 2, 3, 2, 2, 3], ofertas: [0, 0, 0, 1, 0, 1, 0, 1] },
+      s: { visualizaciones: [2410, 1380, 1120, 980, 940, 900, 870, 850], favoritos: [88, 61, 49, 44, 41, 40, 38, 37], solicitudes: [10, 7, 6, 5, 5, 5, 3, 5],
+           noViables: [1, 1, 0, 1, 0, 0, 1, 0], presenciales: [3, 3, 3, 2, 3, 2, 2, 3], ofertas: [0, 0, 0, 1, 0, 1, 0, 1] },
       fb: {
         3: [['visita', 2, 'Raúl', 'positiva', [], 'Encantado con la terraza; presenta oferta.']],
         5: [['visita', 4, 'Pilar', 'positiva', ['Precio'], 'Oferta un 5 % por debajo del precio de salida.']],
@@ -107,14 +105,14 @@
     { id: 'p4', company: 'as', title: 'Apartamento en venta en Av. Carrer la Mar, 64 – El Campello', short: 'Apartamento Carrer la Mar, 64',
       address: 'Av. Carrer la Mar, 64, 4º · El Campello', type: 'Apartamento', ref: 'AS-1120', price: 245000, owner: 'D. Andrés Gil Navarro', photo: 'assets/media/p7.jpg',
       features: ['82 m² construidos', '2 dormitorios', '2 baños', 'Vistas al mar', 'Piscina comunitaria', 'Plaza de garaje'],
-      s: { visualizaciones: [2900, 1600, 1350, 1220, 1150, 1100, 1060, 1040], favoritos: [120, 70, 58, 52, 50, 47, 45, 44], solicitudes: [9, 7, 7, 6, 6, 6, 5, 6],
-           ofrecidos: [2, 1, 1, 0, 1, 0, 1, 0], noViables: [2, 2, 1, 2, 2, 1, 2, 2], presenciales: [2, 1, 1, 1, 1, 0, 1, 1], ofertas: [0, 0, 0, 0, 0, 0, 0, 0] },
+      s: { visualizaciones: [2900, 1600, 1350, 1220, 1150, 1100, 1060, 1040], favoritos: [120, 70, 58, 52, 50, 47, 45, 44], solicitudes: [11, 8, 8, 6, 7, 6, 6, 6],
+           noViables: [2, 2, 1, 2, 2, 1, 2, 2], presenciales: [2, 1, 1, 1, 1, 0, 1, 1], ofertas: [0, 0, 0, 0, 0, 0, 0, 0] },
       fb: { 7: [['visita', 3, 'Mark (comprador extranjero)', 'dudas', ['Precio'], 'Pide más fotos y vídeo antes de una segunda visita.']] } },
     { id: 'p5', company: 'as', title: 'Piso en venta en C/ Castaños, 22 – Alicante', short: 'Piso C/ Castaños, 22',
       address: 'C/ Castaños, 22, 2º · Alicante', type: 'Piso', ref: 'AS-0233', price: 265000, owner: 'D. Miguel Castro León', photo: 'assets/media/p3.jpg',
       features: ['105 m² construidos', '3 dormitorios', '2 baños', 'Balcón', 'Reformado', 'Ascensor'],
-      s: { visualizaciones: [2100, 1300, 1150, 1080, 1020, 990, 960, 940], favoritos: [80, 55, 49, 46, 44, 42, 41, 40], solicitudes: [6, 5, 5, 5, 5, 4, 5, 4],
-           ofrecidos: [2, 1, 1, 1, 0, 1, 0, 1], noViables: [1, 0, 1, 0, 1, 0, 0, 1], presenciales: [3, 3, 2, 3, 2, 2, 3, 2], ofertas: [0, 0, 0, 0, 1, 0, 0, 1] },
+      s: { visualizaciones: [2100, 1300, 1150, 1080, 1020, 990, 960, 940], favoritos: [80, 55, 49, 46, 44, 42, 41, 40], solicitudes: [8, 6, 6, 6, 5, 5, 5, 5],
+           noViables: [1, 0, 1, 0, 1, 0, 0, 1], presenciales: [3, 3, 2, 3, 2, 2, 3, 2], ofertas: [0, 0, 0, 0, 1, 0, 0, 1] },
       fb: { 7: [['visita', 2, 'Laura', 'positiva', [], 'Oferta un 4 % por debajo del precio.']] } },
   ];
 
@@ -136,7 +134,7 @@
       return { ...meta, published: list[0].week };
     });
     return {
-      version: 2,
+      version: 3,
       companies: COMPANIES.map((c) => ({ ...c })),
       properties,
       weeks,
@@ -157,8 +155,8 @@
   const sumK = (list, k) => list.reduce((s, w) => s + v0(w, k), 0);
   const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
 
-  // Contactos: solicitudes por portales + clientes del bufete. Los no viables no cuentan como contacto util.
-  const contactos = (w) => v0(w, 'solicitudes') + v0(w, 'ofrecidos');
+  // Contactos: solicitudes de informacion. Los no viables (financiacion) no cuentan como contacto util.
+  const contactos = (w) => v0(w, 'solicitudes');
   const viables = (w) => Math.max(0, contactos(w) - v0(w, 'noViables'));
 
   function ratios(w) {
@@ -172,7 +170,7 @@
   const RATIO_DEFS = [
     { key: 'interes',   label: 'Interés del anuncio', formula: 'favoritos ÷ visualizaciones', digits: 1 },
     { key: 'solicitud', label: 'Tasa de solicitud',   formula: 'solicitudes ÷ visualizaciones', digits: 2 },
-    { key: 'visita',    label: 'Paso a visita',       formula: 'visitas ÷ contactos viables', digits: 0 },
+    { key: 'visita',    label: 'Paso a visita',       formula: 'visitas ÷ solicitudes viables', digits: 0 },
     { key: 'oferta',    label: 'Paso a oferta',       formula: 'ofertas ÷ visitas', digits: 0 },
   ];
 
@@ -248,15 +246,15 @@
     else if (weeksOn >= 3 && st.value >= first - 5) items.push(`El inmueble mantiene su fuerza comercial tras ${weeksOn} semanas en el mercado (${st.value} puntos).`);
 
     // 2. Embudo acumulado
-    if (acc.visualizaciones) items.push(`Desde la publicación: ${acc.visualizaciones.toLocaleString('es-ES', { useGrouping: 'always' })} visualizaciones, ${acc.contactos} contactos (${acc.viables} viables), ${acc.presenciales} visitas presenciales y ${acc.ofertas} ${acc.ofertas === 1 ? 'oferta' : 'ofertas'}.`);
+    if (acc.visualizaciones) items.push(`Desde la publicación: ${acc.visualizaciones.toLocaleString('es-ES', { useGrouping: 'always' })} visualizaciones, ${acc.contactos} solicitudes de información (${acc.viables} viables), ${acc.presenciales} visitas presenciales y ${acc.ofertas} ${acc.ofertas === 1 ? 'oferta' : 'ofertas'}.`);
 
     // 3. No viables: no se atribuyen al inmueble
-    if (acc.noViables > 0) items.push(`${acc.noViables} ${acc.noViables === 1 ? 'contacto no ha superado' : 'contactos no han superado'} el estudio de viabilidad financiera; no se tienen en cuenta en los ratios del inmueble.`);
+    if (acc.noViables > 0) items.push(`${acc.noViables} ${acc.noViables === 1 ? 'solicitud no ha superado' : 'solicitudes no han superado'} el estudio de viabilidad financiera; no se tienen en cuenta en los ratios del inmueble.`);
 
     // 4. Motivo mas repetido en el feedback
     const top = acc.topMotivos[0];
     if (top && acc.feedback >= 2 && top[1] >= 2) {
-      items.push(`El motivo más repetido en el feedback es «${top[0].toLowerCase()}» (${top[1]} de ${acc.feedback} comentarios).`);
+      items.push(`El motivo más repetido en los comentarios de compradores es «${top[0].toLowerCase()}» (${top[1]} de ${acc.feedback} comentarios).`);
       if (top[0] === 'Tipo de vivienda') recs.push('orientar la difusión a clientes que buscan este tipo de vivienda');
     }
 

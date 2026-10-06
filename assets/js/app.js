@@ -8,7 +8,7 @@
   const I = window.ISD;
   const { weekInfo, fmtDay, currentWeekId, shiftWeek, ratios, RATIO_DEFS, change, diagnose, val, contactos, viables, cumulative, strength, strengthSeries, MOTIVOS, FB_TIPOS, VALORACION, FONTS } = I;
 
-  const STORE = 'isd_demo_v2';
+  const STORE = 'isd_demo_v3';
   const AUTH = 'isd_auth';
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -25,7 +25,7 @@
   function load() {
     try {
       const raw = localStorage.getItem(STORE);
-      if (raw) { const s = JSON.parse(raw); if (s && s.version === 2) return s; }
+      if (raw) { const s = JSON.parse(raw); if (s && s.version === 3) return s; }
     } catch (e) { /* almacenamiento no disponible: se usa la semilla */ }
     return I.buildSeed();
   }
@@ -275,7 +275,7 @@
     return next > cur ? list[list.length - 1].week : next;
   }
 
-  const hintOf = (f) => (f.key === 'ofrecidos' ? `Clientes de la base de datos ${company().dbLabel || 'propia'}` : (f.hint || ''));
+  const hintOf = (f) => f.hint || '';
   let fbDraft = [];
   function fbRow(f, i) {
     return `<div class="fbi" data-i="${i}">
@@ -309,7 +309,7 @@
       <div class="g-semana">
         <div class="card form-card">
           <div class="card-head">
-            <div><h2>Datos de la semana</h2><p>Rellena los indicadores y el feedback, y pulsa <b>Guardar semana</b>. Usa Tab o Enter para pasar de un campo a otro.</p></div>
+            <div><h2>Datos de la semana</h2><p>Rellena los indicadores y los comentarios, y pulsa <b>Guardar semana</b>. Usa Tab o Enter para pasar de un campo a otro.</p></div>
             <div class="week-pick">
               <button class="wp-btn" data-wk="-1" ${canPrev ? '' : 'disabled'} aria-label="Semana anterior"><svg class="ico" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button>
               <div class="wp-txt"><b>${wi.label}</b><span>${wi.range} · semana ${weekNo} en el mercado</span></div>
@@ -329,8 +329,8 @@
             </label>`).join('')}
           </div>
 
-          <div class="fb-head"><div><h3>Feedback de la semana</h3><p>Una línea por visita, cliente de la base de datos o cliente no viable. Marca los motivos para que el informe los acumule.</p></div>
-            <button class="btn btn-line btn-sm" id="fbAdd"><svg class="ico" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Añadir feedback</button></div>
+          <div class="fb-head"><div><h3>Comentarios y feedback de compradores</h3><p>Una línea por visita, contacto sin visita o cliente no viable. Marca los motivos para que el informe los acumule.</p></div>
+            <button class="btn btn-line btn-sm" id="fbAdd"><svg class="ico" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Añadir comentario</button></div>
           <div class="fb-list" id="fbList"></div>
 
           <div class="warns" id="warns"></div>
@@ -353,7 +353,7 @@
       <div class="card hist-card">
         <div class="card-head"><div><h2>Histórico</h2><p>Cada semana guardada es una foto fija del inmueble. Pulsa una fila para editarla.</p></div></div>
         <div class="table-wrap"><table class="tbl">
-          <thead><tr><th>Semana</th>${fields().map((f) => `<th class="n">${esc(f.short || f.label)}</th>`).join('')}<th class="n">Feedback</th><th class="n">Fuerza</th><th></th></tr></thead>
+          <thead><tr><th>Semana</th>${fields().map((f) => `<th class="n">${esc(f.short || f.label)}</th>`).join('')}<th class="n">Comentarios</th><th class="n">Fuerza</th><th></th></tr></thead>
           <tbody>${list.map((w, i) => ({ w, i })).reverse().map(({ w, i }) => {
             const info = weekInfo(w.week), st = strength(list, i);
             return `<tr data-week="${w.week}" class="${w.week === editWeek ? 'on' : ''}">
@@ -375,7 +375,7 @@
       return { week: editWeek, values, feedback };
     };
     const renderFb = () => {
-      $('#fbList').innerHTML = fbDraft.length ? fbDraft.map(fbRow).join('') : '<p class="fb-empty">Sin feedback esta semana. Pulsa <b>Añadir feedback</b> para registrar una visita.</p>';
+      $('#fbList').innerHTML = fbDraft.length ? fbDraft.map(fbRow).join('') : '<p class="fb-empty">Sin comentarios esta semana. Pulsa <b>Añadir comentario</b> para registrar una visita.</p>';
     };
     const refreshLive = () => {
       const draft = readForm();
@@ -484,11 +484,11 @@
 
   function warnings(v, prevW) {
     const out = [], has = (k) => v[k] != null;
-    const cont = (v.solicitudes || 0) + (v.ofrecidos || 0);
+    const cont = v.solicitudes || 0;
     if (has('favoritos') && has('visualizaciones') && v.favoritos > v.visualizaciones) out.push('Hay más favoritos que visualizaciones. Revisa los datos.');
     if (has('solicitudes') && has('visualizaciones') && v.solicitudes > v.visualizaciones) out.push('Hay más solicitudes que visualizaciones del anuncio.');
-    if (has('noViables') && v.noViables > cont) out.push('Hay más clientes no viables que contactos (solicitudes + clientes ofrecidos).');
-    if (has('presenciales') && v.presenciales > cont) out.push('Hay más visitas presenciales que contactos esta semana. Si vienen de semanas anteriores es correcto.');
+    if (has('noViables') && v.noViables > cont) out.push('Hay más clientes no viables que solicitudes de información.');
+    if (has('presenciales') && v.presenciales > cont) out.push('Hay más visitas presenciales que solicitudes esta semana. Si vienen de semanas anteriores es correcto.');
     if (has('ofertas') && has('presenciales') && v.ofertas > v.presenciales) out.push('Hay más ofertas que visitas presenciales esta semana.');
     if (prevW) {
       fields().forEach((f) => {
@@ -507,7 +507,7 @@
   }
 
   function partsHTML(st) {
-    const P = [['visibilidad', 'Visibilidad', '20 %'], ['interes', 'Interés (contactos viables)', '30 %'], ['visita', 'Paso a visita', '30 %'], ['ofertas', 'Ofertas', '20 %']];
+    const P = [['visibilidad', 'Visibilidad', '20 %'], ['interes', 'Interés (solicitudes viables)', '30 %'], ['visita', 'Paso a visita', '30 %'], ['ofertas', 'Ofertas', '20 %']];
     return `<div class="parts">${P.map(([k, l, w]) => `<div class="part"><span>${l}<i>${w}</i></span><div class="pbar"><i style="width:${st.parts[k]}%;background:${ZC[I.zoneOf(st.parts[k]).key]}"></i></div><b>${st.parts[k]}</b></div>`).join('')}</div>`;
   }
 
@@ -526,13 +526,13 @@
     </div>`;
   }
   function motivosHTML(acc) {
-    if (!acc.topMotivos.length) return '<p class="muted small">Aún no hay motivos marcados en el feedback.</p>';
+    if (!acc.topMotivos.length) return '<p class="muted small">Aún no hay motivos marcados en los comentarios.</p>';
     const max = acc.topMotivos[0][1];
     return `<div class="mot">${acc.topMotivos.slice(0, 6).map(([m, n]) => `<div class="mot-row"><span>${esc(m)}</span><div class="mot-bar"><i style="width:${(n / max) * 100}%"></i></div><b>${n}</b></div>`).join('')}</div>
-      <p class="muted small">Sobre ${acc.feedback} comentarios de visitas y clientes desde la publicación.</p>`;
+      <p class="muted small">Sobre ${acc.feedback} comentarios de compradores desde la publicación.</p>`;
   }
   function cumulativeHTML(acc) {
-    const items = [['Semanas en el mercado', acc.semanas], ['Visualizaciones', acc.visualizaciones], ['Contactos', acc.contactos], ['No viables', acc.noViables], ['Visitas presenciales', acc.presenciales], ['Ofertas', acc.ofertas]];
+    const items = [['Semanas en el mercado', acc.semanas], ['Visualizaciones', acc.visualizaciones], ['Solicitudes', acc.contactos], ['No viables', acc.noViables], ['Visitas presenciales', acc.presenciales], ['Ofertas', acc.ofertas]];
     return `<div class="acc">${items.map(([l, v]) => `<div><b>${num(v)}</b><span>${l}</span></div>`).join('')}</div>`;
   }
 
@@ -591,7 +591,7 @@
           <div class="cc-body"><canvas id="ch2"></canvas></div>
         </div>
         <div class="card mot-card">
-          <div class="cc-head"><h3>Motivos más repetidos</h3><span>Feedback acumulado</span></div>
+          <div class="cc-head"><h3>Motivos más repetidos</h3><span>Comentarios acumulados</span></div>
           ${motivosHTML(acc)}
         </div>
 
@@ -604,8 +604,8 @@
           <p class="note">Los clientes no viables por financiación no cuentan como contacto útil: así no penalizan al inmueble.</p>
         </div>
         <div class="card fb-card">
-          <div class="cc-head"><h3>Feedback reciente</h3><span>${fb.total} comentarios en total</span></div>
-          <div class="fbx-list">${fb.items.map(fbHTML).join('') || '<p class="muted small">Sin feedback registrado.</p>'}</div>
+          <div class="cc-head"><h3>Comentarios y feedback de compradores</h3><span>${fb.total} en total · más recientes</span></div>
+          <div class="fbx-list">${fb.items.map(fbHTML).join('') || '<p class="muted small">Sin comentarios registrados.</p>'}</div>
         </div>
       </div>`;
 
@@ -654,7 +654,7 @@
     charts.ch1 = new Chart($('#ch1'), { type: 'line', data: { labels, datasets: [line('Visualizaciones', list.map((w) => val(w, 'visualizaciones')), c.c2, true)] }, options: chartBase() });
     charts.ch2 = new Chart($('#ch2'), {
       type: 'line',
-      data: { labels, datasets: [line('Contactos viables', list.map((w) => viables(w)), c.c2), line('Visitas presenciales', list.map((w) => val(w, 'presenciales')), SERIES[0]), line('Ofertas', list.map((w) => val(w, 'ofertas')), SERIES[1])] },
+      data: { labels, datasets: [line('Solicitudes viables', list.map((w) => viables(w)), c.c2), line('Visitas presenciales', list.map((w) => val(w, 'presenciales')), SERIES[0]), line('Ofertas', list.map((w) => val(w, 'ofertas')), SERIES[1])] },
       options: legendOn(chartBase()),
     });
   }
@@ -700,7 +700,7 @@
             <div class="tg-list">
               ${toggle('charts', 'Impacto estadístico (gráficos)', sec.charts, 'data-sec')}
               ${toggle('ratios', 'Ratios y motivos', sec.ratios, 'data-sec')}
-              ${toggle('feedback', 'Feedback de clientes', sec.feedback, 'data-sec')}
+              ${toggle('feedback', 'Comentarios y feedback de compradores', sec.feedback, 'data-sec')}
               ${toggle('diagnosis', 'Conclusión', sec.diagnosis, 'data-sec')}
             </div>
           </div>
@@ -816,8 +816,8 @@
         ${head(true)}
         ${sec.charts ? `<section class="pp-block"><h3>${H('Impacto estadístico')}</h3><div class="pp-charts">
           <figure><figcaption>Visualizaciones del anuncio</figcaption><canvas id="pc1" width="330" height="132"></canvas></figure>
-          <figure><figcaption>Contactos viables y visitas presenciales</figcaption><canvas id="pc2" width="330" height="132"></canvas>
-            <div class="pp-legend"><span><i style="background:${col.c2}"></i>Contactos viables</span><span><i style="background:${SERIES[0]}"></i>Visitas presenciales</span></div></figure>
+          <figure><figcaption>Solicitudes viables y visitas presenciales</figcaption><canvas id="pc2" width="330" height="132"></canvas>
+            <div class="pp-legend"><span><i style="background:${col.c2}"></i>Solicitudes viables</span><span><i style="background:${SERIES[0]}"></i>Visitas presenciales</span></div></figure>
         </div><p class="pp-impact">${esc(impactText(acc, c))}</p></section>` : ''}
 
         ${sec.ratios ? `<section class="pp-row">
@@ -828,7 +828,7 @@
           <div class="pp-mot"><h3>${H('Motivos más repetidos')}</h3>${motivosHTML(acc)}</div>
         </section>` : ''}
 
-        ${sec.feedback && fb.items.length ? `<section class="pp-block"><h3>${H('Feedback')}</h3><div class="pp-fb">${fb.items.map(fbHTML).join('')}</div>
+        ${sec.feedback && fb.items.length ? `<section class="pp-block"><h3>${H('Comentarios y feedback de compradores')}</h3><div class="pp-fb">${fb.items.map(fbHTML).join('')}</div>
           ${fb.total > fb.items.length ? `<p class="pp-note">Se muestran los ${fb.items.length} comentarios más recientes de ${fb.total}.</p>` : ''}</section>` : ''}
 
         ${sec.diagnosis ? `<section class="pp-diag"><h3>${H('Conclusión')}</h3><p>${esc(dText)}</p></section>` : ''}
@@ -854,9 +854,8 @@
   // Parrafo de impacto estadistico, con la misma redaccion que vuestros informes actuales
   function impactText(acc, c) {
     const s1 = acc.solicitudes === 1 ? '1 solicitud de información' : `${num(acc.solicitudes)} solicitudes de información`;
-    const s2 = acc.ofrecidos === 1 ? '1 cliente' : `${num(acc.ofrecidos)} clientes`;
     const s3 = acc.presenciales === 1 ? '1 visita presencial' : `${num(acc.presenciales)} visitas presenciales`;
-    return `Durante las ${acc.semanas} ${acc.semanas === 1 ? 'semana' : 'semanas'} desde la publicación, el anuncio ha obtenido ${num(acc.visualizaciones)} visualizaciones y se han recibido un total de ${s1} a través de portales inmobiliarios. Además, la vivienda ha sido ofrecida directamente a ${s2} de la base de datos ${c.dbLabel || 'de la empresa'}, generándose ${s3} en total.`;
+    return `Durante las ${acc.semanas} ${acc.semanas === 1 ? 'semana' : 'semanas'} desde la publicación, el anuncio ha obtenido ${num(acc.visualizaciones)} visualizaciones y se han recibido un total de ${s1} a través de portales inmobiliarios, generándose ${s3} en total.`;
   }
 
   function drawPaperCharts(list, col) {
@@ -865,7 +864,7 @@
     const opts = () => { const o = chartBase({ animation: false, responsive: false, devicePixelRatio: 3 }); o.plugins.tooltip = { enabled: false }; o.scales.x.ticks.font.size = 10; o.scales.y.ticks.font.size = 10; return o; };
     const pl = (l, d, color, fill) => ({ ...line(l, d, color, fill), pointRadius: 2.5, pointBorderWidth: 0 });
     charts.pc1 = new Chart($('#pc1'), { type: 'line', data: { labels, datasets: [pl('Visualizaciones', list.map((w) => val(w, 'visualizaciones')), col.c2, true)] }, options: opts() });
-    charts.pc2 = new Chart($('#pc2'), { type: 'line', data: { labels, datasets: [pl('Contactos viables', list.map((w) => viables(w)), col.c2), pl('Visitas presenciales', list.map((w) => val(w, 'presenciales')), SERIES[0])] }, options: opts() });
+    charts.pc2 = new Chart($('#pc2'), { type: 'line', data: { labels, datasets: [pl('Solicitudes viables', list.map((w) => viables(w)), col.c2), pl('Visitas presenciales', list.map((w) => val(w, 'presenciales')), SERIES[0])] }, options: opts() });
   }
 
   function fitPaper() {
@@ -982,7 +981,7 @@
           <div class="card-head"><div><h2>Indicador de fuerza comercial</h2><p>Cómo se calcula la aguja. Los pesos y las zonas se ajustan con vosotros.</p></div></div>
           <div class="ref-grid">
             <div><b>20 %</b><span>Visibilidad</span><i>Visualizaciones frente a lo esperable para su semana en el mercado</i></div>
-            <div><b>30 %</b><span>Interés</span><i>Contactos viables por cada 1.000 visualizaciones (referencia ${String(R.contactosPorMil).replace('.', ',')})</i></div>
+            <div><b>30 %</b><span>Interés</span><i>Solicitudes viables por cada 1.000 visualizaciones (referencia ${String(R.contactosPorMil).replace('.', ',')})</i></div>
             <div><b>30 %</b><span>Paso a visita</span><i>Visitas presenciales frente a contactos viables (referencia ${R.pasoVisita * 100} %)</i></div>
             <div><b>20 %</b><span>Ofertas</span><i>Ofertas recientes; muchas visitas acumuladas sin oferta restan</i></div>
           </div>
@@ -990,10 +989,11 @@
         </div>
 
         <div class="card">
-          <div class="card-head"><div><h2>Usuarios</h2><p>Seis accesos, uno por asesor. Cada usuario entra con su contraseña.</p></div></div>
+          <div class="card-head"><div><h2>Usuarios</h2><p>Seis usuarios con nombre y dos accesos genéricos para quien entra de forma ocasional. Cada uno con su contraseña.</p></div></div>
           <div class="users">
-            <div><span class="avatar dark">DG</span><div><b>David</b><i>Administrador · todas las empresas</i></div></div>
-            ${['Laura Gómez', 'Pablo Ortega', 'Marta Soler', 'Javier Ruiz', 'Elena Mora'].map((n) => `<div><span class="avatar">${n.split(' ').map((x) => x[0]).join('')}</span><div><b>${n}</b><i>Asesor · García-Toledano y AS</i></div></div>`).join('')}
+            <div><span class="avatar dark">DA</span><div><b>David</b><i>Administrador · todas las empresas</i></div></div>
+            ${['Patricia', 'Aitor', 'Laura', 'Fernanda', 'Samanta'].map((n) => `<div><span class="avatar">${n.slice(0, 2).toUpperCase()}</span><div><b>${n}</b><i>Asesor · García-Toledano y AS</i></div></div>`).join('')}
+            ${['Acceso general 1', 'Acceso general 2'].map((n) => `<div><span class="avatar">AG</span><div><b>${n}</b><i>Genérico · uso ocasional para generar informes</i></div></div>`).join('')}
           </div>
           <p class="note">En la versión final: contraseñas cifradas, sesiones seguras y conexión HTTPS.</p>
         </div>
