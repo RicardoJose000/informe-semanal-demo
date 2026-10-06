@@ -529,7 +529,7 @@
     if (!acc.topMotivos.length) return '<p class="muted small">Aún no hay motivos marcados en los comentarios.</p>';
     const max = acc.topMotivos[0][1];
     return `<div class="mot">${acc.topMotivos.slice(0, 6).map(([m, n]) => `<div class="mot-row"><span>${esc(m)}</span><div class="mot-bar"><i style="width:${(n / max) * 100}%"></i></div><b>${n}</b></div>`).join('')}</div>
-      <p class="muted small">Sobre ${acc.feedback} comentarios de compradores desde la publicación.</p>`;
+      <p class="muted small">Sobre ${acc.feedback} ${acc.feedback === 1 ? 'comentario' : 'comentarios'} de compradores desde la publicación.</p>`;
   }
   function cumulativeHTML(acc) {
     const items = [['Semanas en el mercado', acc.semanas], ['Visualizaciones', acc.visualizaciones], ['Solicitudes', acc.contactos], ['No viables', acc.noViables], ['Visitas presenciales', acc.presenciales], ['Ofertas', acc.ofertas]];
