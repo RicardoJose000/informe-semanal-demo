@@ -42,6 +42,7 @@
   const repFields = () => fields().filter((f) => !S.report.hidden[f.key]);
 
   let focusWeek = null;   // semana seleccionada en Evolucion / Informe
+  let justSaved = null;   // semana recien guardada (para el aviso de confirmacion)
   let editWeek = null;    // semana del formulario
   const charts = {};
 
@@ -147,6 +148,7 @@
   }
 
   function setView(v) {
+    if (v !== 'semana') justSaved = null;
     S.ui.view = v; save();
     history.replaceState(null, '', `#/${v}`);
     renderTop(); renderView();
@@ -171,7 +173,7 @@
       <button class="side-add" data-add><svg class="ico" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Nuevo inmueble</button>`;
     $('#side').onclick = (e) => {
       const b = e.target.closest('.pitem');
-      if (b) { S.ui.property = b.dataset.id; focusWeek = editWeek = null; save(); renderSide(); renderView(); return; }
+      if (b) { S.ui.property = b.dataset.id; focusWeek = editWeek = justSaved = null; save(); renderSide(); renderView(); return; }
       if (e.target.closest('[data-add]')) { setView('ajustes'); setTimeout(() => { const el = $('#newProp'); if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); $('input', el).focus(); } }, 50); }
     };
   }
@@ -315,6 +317,7 @@
             </div>
           </div>
 
+          ${justSaved === editWeek ? `<div class="savedweek" id="savedWeek"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M7.5 12.5l3 3 6-6.5"/></svg><div><b>${wi.label} guardada</b><span>La fuerza comercial, los acumulados y la conclusión ya están actualizados. Si cambias algo, pulsa Actualizar semana.</span></div><div class="sw-btns"><button class="btn btn-line btn-sm" data-go="evolucion">Ver evolución</button><button class="btn btn-accent btn-sm" data-go="informe">Generar informe</button></div></div>` : ''}
           ${saved ? '' : `<div class="newweek" id="newWeek"><div><b>Semana nueva</b><span>Rellena los datos o empieza con los de la semana anterior y cambia solo lo que se ha movido.</span></div>${prevW ? '<button class="btn btn-accent btn-sm" id="copyPrev2"><svg class="ico" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>Copiar semana anterior</button>' : ''}</div>`}
           <div class="missing" id="missing" hidden></div>
           <div class="inputs">${fields().map((f, i) => `
@@ -421,7 +424,8 @@
       inp.addEventListener('input', refreshLive);
       inp.addEventListener('keydown', (e) => { if (e.key !== 'Enter') return; e.preventDefault(); if (inputs[i + 1]) inputs[i + 1].focus(); else $('#fbAdd').focus(); });
     });
-    $$('.wp-btn', el).forEach((b) => { b.onclick = () => { editWeek = shiftWeek(editWeek, Number(b.dataset.wk)); viewSemana(el); }; });
+    $$('#savedWeek [data-go]', el).forEach((b) => { b.onclick = () => { justSaved = null; setView(b.dataset.go); }; });
+    $$('.wp-btn', el).forEach((b) => { b.onclick = () => { justSaved = null; editWeek = shiftWeek(editWeek, Number(b.dataset.wk)); viewSemana(el); }; });
     const copyPrev = () => {
       if (!prevW) return;
       fields().forEach((f) => { $(`input[data-k="${f.key}"]`, el).value = val(prevW, f.key) ?? ''; });
@@ -450,10 +454,9 @@
       const rec = { ...draft, savedAt: Date.now() };
       if (i >= 0) arr[i] = rec; else arr.push(rec);
       save();
-      const info = weekInfo(editWeek);
-      focusWeek = editWeek; editWeek = null;
+      focusWeek = editWeek; justSaved = editWeek;
       renderSide(); viewSemana(el);
-      toast(`<b>${info.label}</b> guardada. Fuerza comercial, acumulados y diagnóstico recalculados.`, 'good', { label: 'Ver evolución', fn: () => setView('evolucion') });
+      $('#main').scrollTo({ top: 0, behavior: 'smooth' });
     };
     $$('tbody tr[data-week]', el).forEach((tr) => {
       tr.onclick = (e) => {
@@ -466,7 +469,7 @@
           toast('Semana borrada del histórico.', 'warn');
           return;
         }
-        editWeek = tr.dataset.week; viewSemana(el);
+        justSaved = null; editWeek = tr.dataset.week; viewSemana(el);
         $('.form-card', el).scrollIntoView({ behavior: 'smooth', block: 'start' });
       };
     });

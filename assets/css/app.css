@@ -560,3 +560,18 @@ body { background: var(--bg); }
 .missing { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; margin-bottom: 14px; border-radius: 12px; background: var(--bad-soft); color: #7A2A1B; font-size: 14px; animation: pop .2s ease; }
 .missing .ico { color: var(--bad); width: 19px; height: 19px; margin-top: 1px; }
 .missing b { color: #5E1F13; }
+
+/* confirmacion de semana guardada */
+.savedweek { display: flex; align-items: center; gap: 14px; padding: 14px 16px; margin-bottom: 14px; border-radius: 12px; background: var(--good-soft); border: 1px solid #BFDCCB; flex-wrap: wrap; animation: pop .25s ease; }
+.savedweek > .ico { width: 26px; height: 26px; color: var(--good); flex: none; }
+.savedweek > div:first-of-type { flex: 1; min-width: 220px; }
+.savedweek b { display: block; color: #145236; font-size: 15px; }
+.savedweek span { font-size: 13.5px; color: #24563F; }
+.sw-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* historico compacto: cabe entero en portatil */
+.hist-card .tbl { font-size: 13.5px; }
+.hist-card .tbl th { padding: 10px 10px; letter-spacing: .04em; font-size: 11px; }
+.hist-card .tbl td { padding: 11px 10px; }
+.hist-card .tbl th:first-child, .hist-card .tbl td:first-child { padding-left: 22px; }
+.hist-card .tbl th:last-child, .hist-card .tbl td:last-child { padding-right: 16px; }
