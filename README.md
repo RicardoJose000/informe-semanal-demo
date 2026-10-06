@@ -56,7 +56,7 @@ dentro de `assets/js/data.js` y se ajustan sin tocar el resto del código.
 
 ## Versión final
 
-- Interfaz: React
+- Interfaz: HTML, CSS y JavaScript, sin librerías pesadas (carga rápida en ordenador y tablet)
 - Servidor: Node.js + Express, login seguro con contraseñas cifradas, usuarios con nombre y dos accesos genéricos
 - Base de datos: PostgreSQL (empresas, inmuebles, usuarios, semanas y comentarios)
 - Gráficos: Chart.js
